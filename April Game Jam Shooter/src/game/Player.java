@@ -206,6 +206,7 @@ public class Player {
 		return attackDamage;
 	}
 
+	// @return The attackSpeed of player
 	public int getAS() {
 		return attackSpeed;
 	}

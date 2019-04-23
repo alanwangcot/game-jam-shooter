@@ -71,4 +71,15 @@ public class Enemy {
 		return angle;
 	}
 	
+	// @return posX
+	public int getPosX() {
+		return posX;
+		
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+	// @return posY
+	
 }

@@ -1,3 +1,13 @@
+/*
+ * @author Alan Wang
+ * 
+ * Project description: A simple 2d space themed shooter.
+ * 
+ * Date created: April 13, 2019
+ * 
+ * Date modified: April 14. 2019
+ */
+
 package game;
 
 import java.util.ArrayList;
@@ -41,6 +51,9 @@ public class Shooter extends PApplet {
 
 		drawPlayer();
 
+		generateEnemies();
+		drawEnemies();
+
 	}
 
 	// draws the player
@@ -54,7 +67,7 @@ public class Shooter extends PApplet {
 		image(playerModel, p1.getPosX(), p1.getPosY());
 	}
 
-	// smooth out animations
+	// TODO: fix this method
 	private void aniSmoothing(int i) {
 		PImage playerModel = loadImage(p1.getPlayerModel());
 		playerModel.resize(40, 40);
@@ -95,15 +108,15 @@ public class Shooter extends PApplet {
 		}
 //		shooting
 		else if (c == 'e' && b) {
-			
+
 			if ((millis() - oldTime) >= p1.getAS()) {
 				System.out.println("shootin");
 				p1.shoot(p1.getDir());
 				oldTime = millis();
 			}
-			
+
 		}
-		
+
 	}
 
 	// draws projectiles
@@ -118,16 +131,42 @@ public class Shooter extends PApplet {
 		}
 
 	}
-	
+
+	// randomly generates enemies
 	public void generateEnemies() {
-		
-		if (Math.random() < 0.5) {
+		if (Math.random() < 0.05 && enemies.size() < 6) {
 			int genPosX = (int) (Math.random() * 800);
 			int genPosY = (int) (Math.random() * 800);
 			Enemy e1 = new Enemy(genPosX, genPosY);
+			enemies.add(e1);
 		}
 	}
 
+	// draws enemies
+	public void drawEnemies() {
+		for (Enemy e : enemies) {
+			PImage eModel = loadImage("res/enemyDown.png");
+			eModel.resize(20, 20);
+			image(eModel, e.getPosX(), e.getPosY());
+		}
+	}
+
+	// TODO: implement collision detection
+	public void testCollision(Projectile p) {
+		if (p.getWhosShot() == 'p') {
+			if (p.getPosX() <= p1.getPosX() + 40 && p.getPosY() <= p1.getPosY() + 40 && p.getPosX() + 10 >= p1.getPosX()
+					&& p.getPosY() + 10 >= p1.getPosY()) {
+				System.out.println("player hit");
+			}
+
+		} else {
+			
+
+		}
+
+	}
+
+	// Driver method
 	public static void main(String[] args) {
 		PApplet.main("game.Shooter");
 	}

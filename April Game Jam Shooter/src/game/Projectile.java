@@ -47,6 +47,10 @@ public class Projectile {
 		return this.direction;
 	}
 
+	public char getWhosShot() {
+		return whosShot;
+	}
+	
 	public void setPos() {
 		if (direction == 'l') {
 			posX -= shotSpeed;
@@ -57,6 +61,10 @@ public class Projectile {
 		} else if (direction == 'd') {
 			posY += shotSpeed;
 		}
+	}
+	
+	public void removeOutOfBounds() {
+		//TODO: implement this method
 	}
 
 
