@@ -17,7 +17,7 @@ public class Player {
 	private String playerModel;
 
 	// detects for input of direction
-	private boolean isUp, isDown, isLeft, isRight = false;
+	private int xVel, yVel = 0;
 
 	// list of the player's shots
 	private List<Projectile> pShots = new ArrayList<Projectile>();
@@ -26,8 +26,8 @@ public class Player {
 	public Player() {
 		health = 100;
 		attackSpeed = 200;
-		attackDamage = 3;
-		speed = 20;
+		attackDamage = 4;
+		speed = 5;
 		range = 500;
 		regen = 1;
 		maxHP = 100;
@@ -85,81 +85,36 @@ public class Player {
 		this.regen += change;
 	}
 
-	/*
-	 * methods to set the movement state of the player
-	 * 
-	 * @param b true or false for whether the player has inputted movement
-	 */
-	public void setLeft(boolean b) {
-		this.isLeft = b;
-	}
 
-	public void setRight(boolean b) {
-		this.isRight = b;
-	}
 
-	public void setUp(boolean b) {
-		this.isUp = b;
-	}
-
-	public void setDown(boolean b) {
-		this.isDown = b;
-	}
-
-	// Changes position of the player. Takes values from -1 to 1 for x and y. -1 is
-	// movement down/to the left, 1 is the opposite. 0 is no movement. When the
-	// player hits an edge, they can't move further that way.
-	public void movement() {
-		double diagonalSpeed = 2 * Math.pow(speed, 0.5) + 1;
+	// Changes position of the player
+	public void movement(char c) {
+	
 		// Movement control.
-		if (isDown && !isUp && !isLeft && !isRight) {
-			posY += speed;
-			playerModel = "res/playerDown.png";
-		} else if (isUp && !isDown && !isLeft && !isRight) {
-			posY -= speed;
-			playerModel = "res/playerUp.png";
-		} else if (isLeft && !isDown && !isUp && !isRight) {
+		if (c == 'a') {
 			posX -= speed;
 			playerModel = "res/playerLeft.png";
-		} else if (isRight && !isUp && !isDown && !isLeft) {
+		} else if (c == 'd') {
 			posX += speed;
 			playerModel = "res/playerRight.png";
-		}
-		// up+right
-		else if (isRight && isUp && !isDown && !isLeft) {
-			posX += diagonalSpeed;
-			posY -= diagonalSpeed;
-			playerModel = "res/playerRight.png";
-		}
-		// up+left
-		else if (!isRight && isUp && !isDown && isLeft) {
-			posX -= diagonalSpeed;
-			posY -= diagonalSpeed;
-			playerModel = "res/playerLeft.png";
-		}
-		// down+right
-		else if (isRight && !isUp && isDown && !isLeft) {
-			posX += diagonalSpeed;
-			posY += diagonalSpeed;
-			playerModel = "res/playerRight.png";
-		}
-		// down+left
-		else if (!isRight && !isUp && isDown && isLeft) {
-			posX -= diagonalSpeed;
-			posY += diagonalSpeed;
-			playerModel = "res/playerLeft.png";
+		} else if (c == 'w') {
+			posY -= speed;
+			playerModel = "res/playerUp.png";
+		} else if (c == 's') {
+			posY += speed;
+			playerModel = "res/playerDown.png";
 		}
 
 		// Makes sure the player doesn't leave the map
 		if (posX <= 0) {
 			posX = 0;
-		} else if (posX >= Shooter.sizeX - 40) {
-			posX = Shooter.sizeX - 40;
+		} else if (posX >= Shooter.sizeX - 60) {
+			posX = Shooter.sizeX - 60;
 		}
 		if (posY <= 0) {
 			posY = 0;
-		} else if (posY >= Shooter.sizeY - 40) {
-			posY = Shooter.sizeY - 40;
+		} else if (posY >= Shooter.sizeY - 60) {
+			posY = Shooter.sizeY - 60;
 		}
 
 	}
@@ -169,10 +124,9 @@ public class Player {
 	 * 
 	 * @param dir The direction the shot will travel
 	 */
-	public void shoot(char dir) {
-		double initSpeed = 0;
-		Projectile p = new Projectile(attackDamage, 'p', posX, posY, dir, initSpeed);
-
+	public void shoot() {
+		char dir = getDir();
+		Projectile p = new Projectile(attackDamage, 'p', posX + 10, posY + 10, dir, 0);
 		pShots.add(p);
 
 	}
@@ -182,8 +136,8 @@ public class Player {
 	 * 
 	 * @return The player shots
 	 */
-	public List getPlayerShots() {
-		return pShots;
+	public ArrayList getPlayerShots() {
+		return (ArrayList) pShots;
 	}
 
 	// @return The playerModel to draw

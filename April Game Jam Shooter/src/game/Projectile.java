@@ -12,7 +12,7 @@ public class Projectile {
 	private int posX, posY;
 	// Direction the shot is traveling
 	private char direction;
-	
+
 	private float angle;
 
 	// Creates a new projectile, with given damage, belonging to player or an enemy,
@@ -25,7 +25,7 @@ public class Projectile {
 		direction = dir;
 		shotSpeed = initSpeed + 25;
 	}
-	
+
 	public Projectile(double damage, char who, int posX, int posY, float angle) {
 		shotDamage = damage;
 		whosShot = who;
@@ -50,7 +50,7 @@ public class Projectile {
 	public char getWhosShot() {
 		return whosShot;
 	}
-	
+
 	public void setPos() {
 		if (direction == 'l') {
 			posX -= shotSpeed;
@@ -62,11 +62,12 @@ public class Projectile {
 			posY += shotSpeed;
 		}
 	}
-	
-	public void removeOutOfBounds() {
-		//TODO: implement this method
+
+	public boolean OutOfBounds() {
+		if (posX <= 0 || posX >= Shooter.sizeX || posY <= 0 || posY >= Shooter.sizeY) {
+			return true;
+		}
+		return false;
 	}
-
-
 
 }
